@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elevidys · Dos relojes</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,600&family=DM+Sans:wght@400;700&display=swap">
+<meta name="theme-color" content="#14110f">
+<style>
+:root{--bg:#14110f;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--ink:#f2efe8;--mut:#9aa3b5;--t:#e9c46a;--a:#ff5a36;--r:#ff6b81}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#3a1f16 0,transparent 60%),var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+h1,h2{font-family:Fraunces,Georgia,serif;margin:0}
+h2{font-size:clamp(28px,5vw,44px);margin-bottom:8px}
+section{max-width:960px;margin:0 auto;padding:72px 20px}
+.rv{opacity:0;transform:translateY(28px);transition:all .8s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;backdrop-filter:blur(8px)}
+.mut{color:var(--mut)}.src{font-size:13px;color:var(--mut)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative}
+.hero h1{font-size:clamp(56px,14vw,140px);line-height:1;background:linear-gradient(90deg,var(--t),var(--a));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:clamp(18px,3vw,26px);max-width:560px}
+.cta{display:inline-block;margin-top:20px;background:var(--t);color:#2a1a00;font-weight:700;padding:14px 24px;border-radius:999px;text-decoration:none;border:0;font-size:16px;cursor:pointer}
+.floaty{position:absolute;right:-30px;top:12%;width:min(60vw,420px);opacity:.9;animation:fl 8s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-22px) rotate(6deg)}}
+.spin{transform-origin:200px 200px;animation:sp 40s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.pulse{animation:pu 2.4s ease-in-out infinite}@keyframes pu{50%{opacity:.3}}
+.steps{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.step{cursor:pointer;transition:.3s;border-color:var(--line)}.step.on{border-color:var(--t);box-shadow:0 0 30px rgba(233,196,106,.25);transform:translateY(-4px)}
+.step svg{width:100%;height:120px}
+.stats{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.big{font-family:Fraunces,Georgia,serif;font-size:52px;font-weight:700;color:var(--a);line-height:1}
+.tl{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}
+.tl .card{flex:0 0 260px;scroll-snap-align:start}.tl b{color:var(--t);font-size:22px;font-family:Fraunces,Georgia,serif}
+.bal{width:100%;max-width:420px;margin:auto;display:block}
+#beam{transition:transform 1.2s cubic-bezier(.3,1.6,.5,1);transform-origin:200px 70px}
+.q{margin:16px 0}.opt{position:relative;display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:14px 16px;border-radius:14px;margin:8px 0;font-size:16px;cursor:pointer;overflow:hidden}
+.opt i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,rgba(233,196,106,.35),rgba(233,196,106,.1));transition:width .9s ease}
+.opt span{position:relative;display:flex;justify-content:space-between;gap:10px}.opt.sel{border-color:var(--t)}
+.warn{background:rgba(255,90,54,.12);border:1px solid var(--a);border-radius:12px;padding:10px 14px;font-size:14px;margin:10px 0}
+nav{position:fixed;top:0;left:0;right:0;z-index:9;display:flex;gap:6px;padding:10px 14px;background:rgba(20,17,15,.85);backdrop-filter:blur(10px);overflow-x:auto}
+nav a{color:var(--ink);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+body.screen nav,body.screen .story{display:none}#screen{display:none}body.screen #screen{display:block;max-width:1200px;margin:auto;padding:28px}
+.sgrid{display:grid;gap:24px;grid-template-columns:1fr 2fr;align-items:start}
+@media(max-width:800px){.sgrid{grid-template-columns:1fr}.floaty{opacity:.35}}
+#qr{background:#fff;padding:14px;border-radius:16px;display:inline-block}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style></head>
+<body>
+<nav class="story"><a href="#hero">Inicio</a><a href="#como">Terapia</a><a href="#datos">Datos</a><a href="#linea">Historia</a><a href="#votar">Vota</a></nav>
+
+<div class="story">
+<section class="hero" id="hero">
+<svg class="floaty" viewBox="0 0 400 400" aria-label="Cápside viral estilizada"><g class="spin"><polygon points="200,60 320,130 320,270 200,340 80,270 80,130" fill="none" stroke="#e9c46a" stroke-width="3"/><polygon points="200,110 280,155 280,245 200,290 120,245 120,155" fill="rgba(233,196,106,.15)" stroke="#e9c46a" stroke-width="2"/><g stroke="#ff5a36" stroke-width="3"><line x1="200" y1="60" x2="200" y2="20"/><line x1="320" y1="130" x2="355" y2="110"/><line x1="320" y1="270" x2="355" y2="290"/><line x1="200" y1="340" x2="200" y2="380"/><line x1="80" y1="270" x2="45" y2="290"/><line x1="80" y1="130" x2="45" y2="110"/></g></g><circle cx="200" cy="200" r="22" fill="#ff5a36" class="pulse"/></svg>
+<p class="mut" style="letter-spacing:4px;font-size:14px">BIOÉTICA × ÉTICA EMPRESARIAL</p>
+<h1 style="font-style:italic">Dos relojes</h1>
+<p>En una clínica, cada mes cuenta. En una junta directiva, cada trimestre. Esta es la historia de Elevidys y de lo que pasa cuando los dos relojes no marcan la misma hora.</p>
+<a class="cta" href="#como">Entrar al caso</a>
+</section>
+
+<section id="como"><h2 class="rv">Qué hace esta terapia, en cuatro pasos</h2><p class="mut rv">Toca cada tarjeta y sigue el viaje.</p>
+<div class="steps rv" id="steps">
+<div class="card step on"><svg viewBox="0 0 200 120"><polygon points="100,20 140,42 140,78 100,100 60,78 60,42" fill="rgba(233,196,106,.2)" stroke="#e9c46a" stroke-width="3"/><circle cx="100" cy="60" r="10" fill="#ff5a36" class="pulse"/></svg><b>1 · El vector</b><p class="mut">Un virus modificado, el AAV, hace de cartero. Lleva una copia acortada del gen que a estos niños les falta.</p></div>
+<div class="card step"><svg viewBox="0 0 200 120"><rect x="20" y="30" width="160" height="60" rx="30" fill="rgba(255,255,255,.08)" stroke="#9aa3b5" stroke-width="2"/><g stroke="#e9c46a" stroke-width="2"><line x1="60" y1="35" x2="60" y2="85"/><line x1="100" y1="35" x2="100" y2="85"/><line x1="140" y1="35" x2="140" y2="85"/></g></svg><b>2 · La fibra muscular</b><p class="mut">Entra en las células del músculo. En Duchenne, esas células no pueden fabricar distrofina.</p></div>
+<div class="card step"><svg viewBox="0 0 200 120"><path d="M30 70 C60 20 90 100 120 50 S170 90 175 60" fill="none" stroke="#e9c46a" stroke-width="5" stroke-linecap="round"/><circle cx="120" cy="50" r="9" fill="#ff5a36" class="pulse"/></svg><b>3 · La micro-distrofina</b><p class="mut">La célula empieza a producir una versión reducida de la proteína. La apuesta es frenar el desgaste del músculo.</p></div>
+<div class="card step"><svg viewBox="0 0 200 120"><path d="M25 70 C25 30 90 25 130 40 C170 50 180 80 150 95 C110 110 40 105 25 70Z" fill="rgba(255,107,129,.25)" stroke="#ff6b81" stroke-width="3"/><circle cx="110" cy="65" r="8" fill="#ff6b81" class="pulse"/></svg><b>4 · El hígado</b><p class="mut">Con dosis altas, el cuerpo puede reaccionar con fuerza y dañar el hígado. Aquí empieza el problema moral.</p></div>
+</div></section>
+
+<section id="datos"><h2 class="rv">Los números detrás de la historia</h2>
+<div class="stats rv">
+<div class="card"><div class="big" data-n="1100" data-p="+">0</div><p class="mut">personas tratadas hasta ahora</p><p class="src">Sarepta, nov. 2025</p></div>
+<div class="card"><div class="big" data-n="65" data-p="−" data-s="%">0</div><p class="mut">menos ingresos en el segundo trimestre de 2026</p><p class="src">Zacks, sept. 2026</p></div>
+<div class="card"><div class="big" data-n="98" data-p="US$" data-s=" M">0</div><p class="mut">lo que facturó Elevidys ese trimestre (98,1 millones)</p><p class="src">Zacks, sept. 2026</p></div>
+<div class="card"><div class="big" data-n="25" data-p="~">0</div><p class="mut">pacientes en un estudio que prueba un inmunosupresor para cuidar el hígado</p><p class="src">Fierce Pharma</p></div>
+</div>
+<div class="card rv" style="margin-top:14px"><b>Lo que cambió en noviembre de 2025:</b> hoy se indica solo a quienes aún caminan y tienen 4 años o más, lleva la advertencia más seria de la FDA por daño hepático, y exige análisis cada semana durante tres meses.<p class="src">FDA · Fierce Pharma · European Pharmaceutical Review</p></div>
+</section>
+
+<section id="linea"><h2 class="rv">Cómo llegamos hasta aquí</h2><p class="mut rv">Desliza →</p>
+<div class="tl rv">
+<div class="card"><b>2023</b><p>La FDA la aprueba por la vía acelerada. Esperanza, con evidencia aún incompleta. [Confirma la fecha exacta.]</p></div>
+<div class="card"><b>2025</b><p>Mueren pacientes por falla hepática. La FDA pide frenar los envíos y Sarepta, al principio, dice que no.</p></div>
+<div class="card"><b>La pausa</b><p>Sarepta termina aceptando una pausa. Después se reanuda, pero solo para quienes caminan.</p></div>
+<div class="card"><b>Nov. 2025</b><p>La etiqueta cambia: advertencia en recuadro y fuera los pacientes que ya no caminan.</p></div>
+<div class="card"><b>2026</b><p>Los ingresos se desploman 65%. El 30 de septiembre se presentan datos nuevos en pacientes mayores que aún caminan.</p></div>
+</div></section>
+</div>
+
+<section id="votar" class="story"><h2 class="rv">Ahora decides tú</h2><p class="mut rv">Tus respuestas mueven la balanza entre el paciente y la empresa.</p>
+<svg class="bal rv" viewBox="0 0 400 240" aria-label="Balanza"><rect x="196" y="70" width="8" height="150" fill="#9aa3b5"/><rect x="140" y="215" width="120" height="10" rx="5" fill="#9aa3b5"/>
+<g id="beam"><rect x="40" y="66" width="320" height="8" rx="4" fill="#f2efe8"/>
+<g id="L"><line x1="60" y1="70" x2="60" y2="130" stroke="#9aa3b5"/><rect x="20" y="130" width="80" height="12" rx="6" fill="#e9c46a"/><text x="60" y="165" fill="#e9c46a" text-anchor="middle" font-size="14">Paciente</text></g>
+<g id="Rr"><line x1="340" y1="70" x2="340" y2="130" stroke="#9aa3b5"/><rect x="300" y="130" width="80" height="12" rx="6" fill="#ff5a36"/><text x="340" y="165" fill="#ff5a36" text-anchor="middle" font-size="14">Empresa</text></g></g></svg>
+<div id="qs"></div><div id="warn"></div>
+<p class="src" style="margin-top:30px">¿Estás exponiendo? Abre la <a href="#pantalla" style="color:var(--t)" onclick="setTimeout(()=>location.reload())">vista de pantalla con código QR</a>.</p>
+</section>
+
+<div id="screen">
+<div class="sgrid"><div class="card" style="text-align:center"><h2 style="font-size:30px">Vota desde tu celular</h2><div id="qr"></div><p class="mut" id="url" style="word-break:break-all;font-size:13px"></p><p><b id="tot">0</b> votos</p></div>
+<div><div id="sqs"></div><svg class="bal" id="sbal" viewBox="0 0 400 240"></svg></div></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* ====== CONFIGURA AQUÍ: URL de tu Firebase Realtime Database, sin barra final ======
+   Ejemplo: "https://elevidys-votos-default-rtdb.firebaseio.com"  (ver README) */
+var DB_URL="";
+var QS=[
+{id:"q1",t:"Si hubieras sido la empresa, ¿habrías frenado los envíos al primer aviso?",o:["Sí, de inmediato","Esperar el análisis","Solo si el regulador lo exige"],e:[0,1,1]},
+{id:"q2",t:"¿Qué pesa más aquí?",o:["No maleficencia","Autonomía del paciente","Justicia y acceso","Sostenibilidad de la empresa"],e:[0,0,0,1]},
+{id:"q3",t:"¿Quién debería tener la última palabra?",o:["El regulador","La empresa","Pacientes y familias","Comité independiente"],e:[0,1,0,0]}];
+var vid=localStorage.vid||(localStorage.vid=Math.random().toString(36).slice(2)),mine=JSON.parse(localStorage.mine||"{}"),data={};
+var screenMode=location.hash==="#pantalla";if(screenMode)document.body.classList.add("screen");
+/* Revelado y contadores */
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");e.target.querySelectorAll("[data-n]").forEach(count);io.unobserve(e.target)}})},{threshold:.2});
+document.querySelectorAll(".rv").forEach(function(e){io.observe(e)});
+function count(el){var n=+el.dataset.n,s=null;(function f(t){s=s||t;var p=Math.min((t-s)/1400,1);el.textContent=(el.dataset.p||"")+Math.round(n*(1-Math.pow(1-p,3))).toLocaleString("es")+(el.dataset.s||"");if(p<1)requestAnimationFrame(f)})(performance.now())}
+document.querySelectorAll(".step").forEach(function(s){s.onclick=function(){document.querySelectorAll(".step").forEach(function(x){x.classList.remove("on")});s.classList.add("on")}});
+/* Datos de votación */
+function url(p){return DB_URL+p+".json"}
+function load(){if(!DB_URL)return;fetch(url("/votes")).then(function(r){return r.json()}).then(function(d){data=d||{};draw()}).catch(function(){})}
+function send(q,i){mine[q]=i;localStorage.mine=JSON.stringify(mine);
+if(DB_URL){fetch(url("/votes/"+q+"/"+vid),{method:"PUT",body:JSON.stringify(i)}).then(load)}else{data[q]=data[q]||{};data[q][vid]=i}draw()}
+function counts(q){var c=QS.filter(function(x){return x.id===q})[0].o.map(function(){return 0}),v=data[q]||{};Object.keys(v).forEach(function(k){if(c[v[k]]!==undefined)c[v[k]]++});return c}
+function tilt(){var c=counts("q2"),tot=c.reduce(function(a,b){return a+b},0);if(!tot)return 0;return (c[3]/tot-(tot-c[3])/tot)*18}
+function setBal(){var b=document.getElementById("beam");if(b)b.style.transform="rotate("+tilt()+"deg)"}
+function draw(){var box=document.getElementById("qs"),sb=document.getElementById("sqs");box.innerHTML="";sb.innerHTML="";var total=0;
+QS.forEach(function(q){var c=counts(q.id),t=c.reduce(function(a,b){return a+b},0);if(q.id==="q1")total=t;
+[[box,0],[sb,1]].forEach(function(p){var w=document.createElement("div");w.className="card q";w.innerHTML="<b>"+q.t+"</b>";
+q.o.forEach(function(o,i){var b=document.createElement("button"),show=p[1]||mine[q.id]!==undefined,pc=t?Math.round(c[i]/t*100):0;b.className="opt"+(mine[q.id]===i?" sel":"");
+b.innerHTML="<i style='width:"+(show?pc:0)+"%'></i><span><em style='font-style:normal'>"+o+"</em><b>"+(show?pc+"%":"")+"</b></span>";
+if(!p[1])b.onclick=function(){send(q.id,i)};w.appendChild(b)});p[0].appendChild(w)})});
+document.getElementById("warn").innerHTML=DB_URL?"":"<div class='warn'>Modo demostración: configura Firebase para que los votos se compartan en tiempo real (ver README).</div>";
+var tt=document.getElementById("tot");if(tt)tt.textContent=total;setBal()}
+draw();load();
+if(DB_URL){try{var es=new EventSource(url("/votes"));es.addEventListener("put",load);es.addEventListener("patch",load)}catch(e){}setInterval(load,6000)}
+if(screenMode){var u=location.href.split("#")[0];document.getElementById("url").textContent=u;new QRCode(document.getElementById("qr"),{text:u,width:220,height:220});
+document.getElementById("sbal").innerHTML=document.querySelector("#votar svg").innerHTML;var sb2=document.getElementById("sbal").querySelector("#beam");sb2.id="beam2";
+(function t(){sb2.style.transform="rotate("+tilt()+"deg)";setTimeout(t,1000)})()}
+</script></body></html>
